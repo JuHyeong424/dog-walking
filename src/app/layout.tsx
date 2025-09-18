@@ -12,7 +12,7 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
       </nav>
     </header>
     <main>{children}</main>
-    <footer>© 2025 My Website</footer>
+    <footer></footer>
     </body>
     </html>
   )
