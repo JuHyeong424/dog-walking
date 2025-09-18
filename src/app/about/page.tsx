@@ -1,7 +1,7 @@
 export default function AboutPage() {
   return (
     <div>
-      about
+      세팅
     </div>
   )
 }
