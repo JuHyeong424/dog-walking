@@ -1,5 +1,6 @@
 import Link from "next/link";
 import "@/app/globals.css";
+import Providers from "@/app/providers";
 
 export default function RootLayout({children}: { children: React.ReactNode }) {
   return (
@@ -11,7 +12,7 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
         <Link href="/profile">Profile</Link> | <Link href="/walking">Walking</Link>
       </nav>
     </header>
-    <main>{children}</main>
+    <Providers>{children}</Providers>
     <footer></footer>
     </body>
     </html>
