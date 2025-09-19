@@ -7,11 +7,11 @@ import {useAirPollution} from "@/hooks/useAirPollution";
 
 export default function WeatherComponent() {
   const currentLocation = useCurrentLocation();
-  const { data: weather, isWeatherLoading, isWeatherError } = useOpenWeather({
+  const { data: weather, isLoading: isWeatherLoading, isError: isWeatherError } = useOpenWeather({
     lat: currentLocation?.lat,
     lon: currentLocation?.lon
   });
-  const { data: airPollution, isAirPollutionLoading, isAirPollutionError} = useAirPollution({
+  const { data: airPollution, isLoading: isAirPollutionLoading, isError: isAirPollutionError} = useAirPollution({
     lat: currentLocation?.lat,
     lon: currentLocation?.lon
   });
