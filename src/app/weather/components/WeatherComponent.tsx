@@ -1,20 +1,28 @@
 "use client";
 
-import { useOpenWeather } from "@/hooks/useOpenWeather";
+import {useOpenWeather} from "@/hooks/useOpenWeather";
 import useCurrentLocation from "@/hooks/useCurrentLocation";
 import {getWeatherIcon} from "@/utils/weatherIcons";
 import {useAirPollution} from "@/hooks/useAirPollution";
+import useCurrentDate from "@/hooks/useCurrentDate";
+import {WiHumidity} from "react-icons/wi";
+import {PiWindDuotone} from "react-icons/pi";
+import {WiDust} from "react-icons/wi";
+import {GiDustCloud} from "react-icons/gi";
+import {CiTempHigh} from "react-icons/ci";
+
 
 export default function WeatherComponent() {
   const currentLocation = useCurrentLocation();
-  const { data: weather, isLoading: isWeatherLoading, isError: isWeatherError } = useOpenWeather({
+  const {data: weather, isLoading: isWeatherLoading, isError: isWeatherError} = useOpenWeather({
     lat: currentLocation?.lat,
     lon: currentLocation?.lon
   });
-  const { data: airPollution, isLoading: isAirPollutionLoading, isError: isAirPollutionError} = useAirPollution({
+  const {data: airPollution, isLoading: isAirPollutionLoading, isError: isAirPollutionError} = useAirPollution({
     lat: currentLocation?.lat,
     lon: currentLocation?.lon
   });
+  const koreaTime = useCurrentDate();
   console.log(weather);
   console.log(airPollution)
 
@@ -27,15 +35,48 @@ export default function WeatherComponent() {
   const weatherIcon = getWeatherIcon(weather.weather[0].main);
 
   return (
-    <div className="flex flex-col items-center justify-center w-1/3 bg-blue-50 rounded-lg p-4 font-bold">
-      <h2>{weather.name}</h2>
-      <p className="text-4xl">{weatherIcon}</p>
-      <p>기온: {(weather.main.temp - 273.15).toFixed(2)}°C</p>
-      <p>체감 온도: {(weather.main.feels_like - 273.15).toFixed(2)}°C</p>
-      <p>습도: {weather.main.humidity}%</p>
-      <p>풍속: {weather.wind.speed} m/s</p>
-      <p>미세먼지: {airPollution.list[0].components.pm10}µg/m³</p>
-      <p>초미세먼지: {airPollution.list[0].components.pm2_5}µg/m³</p>
+    <div className="flex flex-col w-3/5 bg-blue-500 rounded-lg p-8 my-4 font-bold text-white">
+      <div className="flex justify-between">
+        <div className="flex flex-col">
+          <h2 className="text-3xl py-2">{weather.name}</h2>
+          <p className="font-thin text-sm">{koreaTime}</p>
+        </div>
+        <div className="flex flex-col">
+          <p className="text-3xl">{(weather.main.temp - 273.15).toFixed(2)}°C</p>
+          <p className="text-4xl">{weatherIcon}</p>
+        </div>
+      </div>
+      <div className="grid grid-cols-5 md:grid-cols-5 gap-6 pt-4">
+        <div className="flex flex-col items-center">
+          <WiHumidity className="bg-white/20 w-12 h-12 p-2"/>
+          <span className="font-thin py-0.5">습도</span>
+          <span>{weather.main.humidity}%</span>
+        </div>
+
+        <div className="flex flex-col items-center">
+          <PiWindDuotone className="bg-white/20 w-12 h-12 p-2"/>
+          <span className="font-thin py-0.5">풍속</span>
+          <span>{weather.wind.speed} m/s</span>
+        </div>
+
+        <div className="flex flex-col items-center">
+          <WiDust className="bg-white/20 w-12 h-12 p-2" />
+          <span className="font-thin py-0.5">미세먼지</span>
+          <span>{airPollution.list[0].components.pm10}µg/m³</span>
+        </div>
+
+        <div className="flex flex-col items-center">
+          <GiDustCloud className="bg-white/20 w-12 h-12 p-2" />
+          <span className="font-thin py-0.5">초미세먼지</span>
+          <span>{airPollution.list[0].components.pm2_5}µg/m³</span>
+        </div>
+
+        <div className="flex flex-col items-center">
+          <CiTempHigh className="bg-white/20 w-12 h-12 p-2" />
+          <span>체감 온도</span>
+          <span>{(weather.main.feels_like - 273.15).toFixed(2)}°C</span>
+        </div>
+      </div>
     </div>
   )
 }
