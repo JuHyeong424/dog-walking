@@ -11,7 +11,7 @@ import {WeatherData} from "@/types/weatherData";
 
 interface WeatherComponentProps {
   weather: WeatherData;
-  currentLocation: { lat: number; lon: number } | null;
+  currentLocation: { lat: number | undefined; lon: number | undefined } | null;
   isWeatherLoading: boolean;
   isWeatherError: boolean;
   airPollution: AirPollutionData;
@@ -45,7 +45,7 @@ export default function WeatherComponent({ weather, currentLocation, isWeatherLo
           <p className="text-4xl">{weatherIcon}</p>
         </div>
       </div>
-      <div className="grid grid-cols-5 md:grid-cols-5 gap-6 pt-4">
+      <div className="grid grid-cols-5 md:grid-cols-5 gap-6 pt-6">
         <div className="flex flex-col items-center">
           <WiHumidity className="bg-white/20 w-12 h-12 p-2"/>
           <span className="font-thin py-0.5">습도</span>
@@ -72,7 +72,7 @@ export default function WeatherComponent({ weather, currentLocation, isWeatherLo
 
         <div className="flex flex-col items-center">
           <CiTempHigh className="bg-white/20 w-12 h-12 p-2" />
-          <span>체감 온도</span>
+          <span  className="font-thin py-0.5">체감 온도</span>
           <span>{(weather.main.feels_like - 273.15).toFixed(2)}°C</span>
         </div>
       </div>
