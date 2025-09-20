@@ -1,28 +1,27 @@
 "use client";
 
-import {useOpenWeather} from "@/hooks/useOpenWeather";
-import useCurrentLocation from "@/hooks/useCurrentLocation";
 import {getWeatherIcon} from "@/utils/weatherIcons";
-import {useAirPollution} from "@/hooks/useAirPollution";
-import useCurrentDate from "@/hooks/useCurrentDate";
 import {WiHumidity} from "react-icons/wi";
 import {PiWindDuotone} from "react-icons/pi";
 import {WiDust} from "react-icons/wi";
 import {GiDustCloud} from "react-icons/gi";
 import {CiTempHigh} from "react-icons/ci";
+import {AirPollutionData} from "@/types/airPollutionData";
+import {WeatherData} from "@/types/weatherData";
+
+interface WeatherComponentProps {
+  weather: WeatherData;
+  currentLocation: { lat: number; lon: number } | null;
+  isWeatherLoading: boolean;
+  isWeatherError: boolean;
+  airPollution: AirPollutionData;
+  isAirPollutionLoading: boolean;
+  isAirPollutionError: boolean;
+  koreaTime: string;
+}
 
 
-export default function WeatherComponent() {
-  const currentLocation = useCurrentLocation();
-  const {data: weather, isLoading: isWeatherLoading, isError: isWeatherError} = useOpenWeather({
-    lat: currentLocation?.lat,
-    lon: currentLocation?.lon
-  });
-  const {data: airPollution, isLoading: isAirPollutionLoading, isError: isAirPollutionError} = useAirPollution({
-    lat: currentLocation?.lat,
-    lon: currentLocation?.lon
-  });
-  const koreaTime = useCurrentDate();
+export default function WeatherComponent({ weather, currentLocation, isWeatherLoading, isWeatherError, airPollution, isAirPollutionLoading, isAirPollutionError, koreaTime }: WeatherComponentProps) {
   console.log(weather);
   console.log(airPollution)
 
@@ -35,7 +34,7 @@ export default function WeatherComponent() {
   const weatherIcon = getWeatherIcon(weather.weather[0].main);
 
   return (
-    <div className="flex flex-col w-3/5 bg-blue-500 rounded-lg p-8 my-4 font-bold text-white">
+    <div className="flex flex-col w-4/7 bg-blue-500 rounded-lg p-8 my-4 font-bold text-white">
       <div className="flex justify-between">
         <div className="flex flex-col">
           <h2 className="text-3xl py-2">{weather.name}</h2>
