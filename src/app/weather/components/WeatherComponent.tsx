@@ -20,7 +20,6 @@ interface WeatherComponentProps {
   koreaTime: string;
 }
 
-
 export default function WeatherComponent({ weather, currentLocation, isWeatherLoading, isWeatherError, airPollution, isAirPollutionLoading, isAirPollutionError, koreaTime }: WeatherComponentProps) {
   console.log(weather);
   console.log(airPollution)

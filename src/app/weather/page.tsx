@@ -32,7 +32,10 @@ export default function WeatherPage() {
           airPollution={airPollution} isAirPollutionLoading={isAirPollutionLoading} isAirPollutionError={isAirPollutionError}
           koreaTime={koreaTime}
         />
-        <WalkingOK />
+        <WalkingOK
+          temperature={weather.main.temp - 273.15} humidity={weather.main.humidity} wind={weather.wind.speed}
+          pm10={airPollution.list[0].components.pm10} pm25={airPollution.list[0].components.pm2_5}
+        />
       </div>
     </div>
   )
