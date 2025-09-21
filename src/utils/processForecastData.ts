@@ -8,6 +8,8 @@ export interface FormattedForecastItem {
   pop: number;
   pm10: number;
   pm25: number;
+  humidity: number;
+  wind: number;
 }
 
 export const processForecastData = (
@@ -35,6 +37,8 @@ export const processForecastData = (
       time: `${ampm} ${displayHour}시`,
       weather: weatherItem.weather[0].main,
       temp: weatherItem.main.temp - 273.15,
+      humidity: weatherItem.main.humidity,
+      wind: weatherItem.wind.speed,
       pop: Math.round(weatherItem.pop * 100),
       pm10: closestAirPollution.components.pm10,
       pm25: closestAirPollution.components.pm2_5,

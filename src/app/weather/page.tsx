@@ -10,6 +10,7 @@ import useForecastWeather from "@/hooks/weatherHooks/useForecastWeather";
 import ForecastWeatherComponent from "@/app/weather/components/forecastWeather/ForecastWeatherComponent";
 import ForecastScoreComponent from "@/app/weather/components/forecastWeather/ForecastScoreComponent";
 import {useForecastAirPollution} from "@/hooks/weatherHooks/useForecastAirPollution";
+import {processForecastData} from "@/utils/processForecastData";
 
 export default function WeatherPage() {
   const currentLocation = useCurrentLocation();
@@ -32,6 +33,8 @@ export default function WeatherPage() {
     lat: currentLocation?.lat,
     lon: currentLocation?.lon
   });
+
+  const chartData = processForecastData(forecastWeather, forecastAirPollution);
 
   return (
     <div className="bg-gray-100 p-20">
@@ -56,9 +59,11 @@ export default function WeatherPage() {
         <h1 className="text-4xl font-bold">기상 예보 기반 산책 적합도</h1>
         <p className="text-gray-500 py-2">기상 예보 정보를 바탕으로 최적 산책 시간을 확인하세요</p>
       </div>
-      <div className="flex flex-row gap-20 py-4">
+      <div className="flex flex-row items-start gap-20 py-4">
           <ForecastWeatherComponent
-            forecastWeather={forecastWeather} isForecastWeatherIsLoading={isForecastWeatherIsLoading}
+            chartData={chartData}
+            forecastWeather={forecastWeather}
+            isForecastWeatherIsLoading={isForecastWeatherIsLoading}
             isForecastWeatherIsError={isForecastWeatherIsError}
             forecastAirPollution={forecastAirPollution}
             isForecastAirPollutionIsLoading={isForecastAirPollutionIsLoading}
@@ -66,8 +71,13 @@ export default function WeatherPage() {
           />
 
           <ForecastScoreComponent
-            forecastWeather={forecastWeather} isForecastWeatherIsLoading={isForecastWeatherIsLoading} isForecastWeatherIsError={isForecastWeatherIsError}
-            forecastAirPollution={forecastAirPollution} isForecastAirPollutionIsLoading={isForecastAirPollutionIsLoading} isForecastAirPollutionIsError={isForecastAirPollutionIsError}
+            chartData={chartData}
+            forecastWeather={forecastWeather}
+            isForecastWeatherIsLoading={isForecastWeatherIsLoading}
+            isForecastWeatherIsError={isForecastWeatherIsError}
+            forecastAirPollution={forecastAirPollution}
+            isForecastAirPollutionIsLoading={isForecastAirPollutionIsLoading}
+            isForecastAirPollutionIsError={isForecastAirPollutionIsError}
           />
       </div>
     </div>

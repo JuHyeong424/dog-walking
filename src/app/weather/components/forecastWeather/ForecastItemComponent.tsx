@@ -2,15 +2,7 @@ import {getWeatherIcon} from "@/utils/weatherIcons";
 import {FaDroplet} from "react-icons/fa6";
 import {WiDust, WiSmoke} from "react-icons/wi";
 import React from "react";
-
-interface ForecastItemProps {
-  time: string;
-  weather: string;
-  temp: number;
-  pop: number;
-  pm10: number;
-  pm25: number;
-}
+import {ForecastItemProps} from "@/types/chartForecastWeatherData";
 
 export default function ForecastItemComponent({ time, weather, temp, pop, pm10, pm25 }: ForecastItemProps) {
   const weatherIcon = getWeatherIcon(weather);

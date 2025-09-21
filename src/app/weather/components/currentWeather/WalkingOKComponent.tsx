@@ -23,7 +23,7 @@ export default function WalkingOKComponent({temperature, humidity, wind, pm10, p
   return (
     <div className="bg-white rounded-xl w-2/7 p-5 shadow-sm">
       <h1 className="font-bold text-2xl">산책 적합도</h1>
-      <WalkingOKGraphComponent totalScore={totalScore} />
+      <WalkingOKGraphComponent totalScore={totalScore.score} />
       <div className="flex flex-col py-8">
         <WalkingOKScoreComponent label="온도" status={tempScore}/>
         <WalkingOKScoreComponent label="습도" status={humidityScore}/>
