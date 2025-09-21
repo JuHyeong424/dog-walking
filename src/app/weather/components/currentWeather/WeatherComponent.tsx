@@ -33,7 +33,7 @@ export default function WeatherComponent({ weather, currentLocation, isWeatherLo
   const weatherIcon = getWeatherIcon(weather.weather[0].main);
 
   return (
-    <div className="flex flex-col w-4/7 bg-blue-500 rounded-lg p-8 my-4 font-bold text-white">
+    <div className="flex flex-col w-4/7 bg-blue-500 rounded-lg p-8 my-4 font-bold text-white shadow-sm">
       <div className="flex justify-between">
         <div className="flex flex-col">
           <h2 className="text-3xl py-2">{weather.name}</h2>

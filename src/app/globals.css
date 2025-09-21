@@ -27,3 +27,30 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE, Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+.forecast-custom-scrollbar::-webkit-scrollbar {
+  height: 8px; /* 가로 스크롤바 높이 */
+}
+
+.forecast-custom-scrollbar::-webkit-scrollbar-track {
+  background: #3b82f6; /* 트랙 색상 */
+}
+
+.forecast-custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #60a5fa; /* 막대 색상 */
+  border-radius: 4px;
+}
+
+.forecast-custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #60a5fa #3b82f6;
+}
+

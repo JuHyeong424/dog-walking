@@ -1,7 +1,7 @@
 import {checkHumidity, checkPM10, checkPM25, checkTemp, checkWind } from "@/utils/walkingScores";
-import WalkingOKScoreComponent from "@/app/weather/components/WalkingOKScoreComponent";
+import WalkingOKScoreComponent from "@/app/weather/components/currentWeather/WalkingOKScoreComponent";
 import totalWalkingScore from "@/utils/totalWalkingScore";
-import WalkingOKGraphComponent from "@/app/weather/components/WalkingOKGraphComponent";
+import WalkingOKGraphComponent from "@/app/weather/components/currentWeather/WalkingOKGraphComponent";
 
 interface WalkingOKProps {
   temperature: number;
@@ -21,7 +21,7 @@ export default function WalkingOKComponent({temperature, humidity, wind, pm10, p
   const totalScore = totalWalkingScore({ tempScore, humidityScore, windScore, pm10Score, pm25Score });
 
   return (
-    <div className="bg-white rounded-xl w-2/7 p-5">
+    <div className="bg-white rounded-xl w-2/7 p-5 shadow-sm">
       <h1 className="font-bold text-2xl">산책 적합도</h1>
       <WalkingOKGraphComponent totalScore={totalScore} />
       <div className="flex flex-col py-8">
