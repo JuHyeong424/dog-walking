@@ -12,7 +12,7 @@ const scoreMap = {
   "좋음": 100,
   "보통": 50,
   "주의": 0,
-};
+} as const;
 
 // 강아지 산책 적합도 계산을 위한 가중치
 const weights = {
