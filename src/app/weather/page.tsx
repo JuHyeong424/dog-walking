@@ -1,7 +1,7 @@
 "use client";
 
 import WeatherComponent from "@/app/weather/components/WeatherComponent";
-import WalkingOK from "@/app/weather/components/WalkingOK";
+import WalkingOKComponent from "@/app/weather/components/WalkingOKComponent";
 import useCurrentLocation from "@/hooks/useCurrentLocation";
 import {useOpenWeather} from "@/hooks/useOpenWeather";
 import {useAirPollution} from "@/hooks/useAirPollution";
@@ -26,16 +26,16 @@ export default function WeatherPage() {
         <p className="text-gray-500 py-2">실시간 기상 정보를 바탕으로 최적 산책 시간을 확인하세요</p>
       </div>
 
-      <div className="flex flex-row gap-20">
-        <WeatherComponent
-          weather={weather} currentLocation={currentLocation} isWeatherLoading={isWeatherLoading} isWeatherError={isWeatherError}
-          airPollution={airPollution} isAirPollutionLoading={isAirPollutionLoading} isAirPollutionError={isAirPollutionError}
-          koreaTime={koreaTime}
-        />
-        <WalkingOK
-          temperature={weather.main.temp - 273.15} humidity={weather.main.humidity} wind={weather.wind.speed}
-          pm10={airPollution.list[0].components.pm10} pm25={airPollution.list[0].components.pm2_5}
-        />
+      <div className="flex flex-row items-start gap-20">
+          <WeatherComponent
+            weather={weather} currentLocation={currentLocation} isWeatherLoading={isWeatherLoading} isWeatherError={isWeatherError}
+            airPollution={airPollution} isAirPollutionLoading={isAirPollutionLoading} isAirPollutionError={isAirPollutionError}
+            koreaTime={koreaTime}
+          />
+          <WalkingOKComponent
+            temperature={weather?.main.temp} humidity={weather?.main.humidity} wind={weather?.wind.speed}
+            pm10={airPollution?.list[0].components.pm10} pm25={airPollution?.list[0].components.pm2_5}
+          />
       </div>
     </div>
   )
