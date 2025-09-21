@@ -30,7 +30,7 @@ export default function ForecastScoreComponent(
     return totalWalkingScore({ time: item.time, tempScore, humidityScore, windScore, pm10Score, pm25Score });
   });
 
-  const totalScoreComment = ((item) => {
+  const totalScoreComment = ((item: number) => {
     if (item >= 80) return "매우 좋음";
     if (item >= 60) return "좋음";
     if (item >= 40) return "보통";
