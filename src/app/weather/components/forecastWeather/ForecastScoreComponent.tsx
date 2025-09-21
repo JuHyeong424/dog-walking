@@ -1,9 +1,9 @@
-import { ForecastData } from "@/types/forecastData";
+import { ForecastData } from "@/types/weather/forecastData";
 import React from "react";
-import {AirPollutionForecastData} from "@/types/airPoluttionForecastData";
-import {ForecastItemProps} from "@/types/chartForecastWeatherData";
-import totalWalkingScore from "@/utils/totalWalkingScore";
-import {checkHumidity, checkPM10, checkPM25, checkTemp, checkWind} from "@/utils/walkingScores";
+import {AirPollutionForecastData} from "@/types/weather/airPoluttionForecastData";
+import {ForecastItemProps} from "@/types/weather/chartForecastWeatherData";
+import totalWalkingScore from "@/utils/weather/totalWalkingScore";
+import {checkHumidity, checkPM10, checkPM25, checkTemp, checkWind} from "@/utils/weather/walkingScores";
 
 interface ForecastScoreProps {
   chartData: ForecastItemProps[];

@@ -1,5 +1,5 @@
-import { ForecastData } from "@/types/forecastData";
-import { AirPollutionForecastData } from "@/types/airPoluttionForecastData";
+import { ForecastData } from "@/types/weather/forecastData";
+import { AirPollutionForecastData } from "@/types/weather/airPoluttionForecastData";
 
 export interface FormattedForecastItem {
   time: string;

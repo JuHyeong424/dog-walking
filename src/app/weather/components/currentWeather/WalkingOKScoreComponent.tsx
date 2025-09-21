@@ -1,4 +1,4 @@
-import {scoreColorMap} from "@/utils/walkingScores";
+import {scoreColorMap} from "@/utils/weather/walkingScores";
 
 interface WalkingOKScoreProps {
   label: string;

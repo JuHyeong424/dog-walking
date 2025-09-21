@@ -1,13 +1,13 @@
 "use client";
 
-import {getWeatherIcon} from "@/utils/weatherIcons";
+import {getWeatherIcon} from "@/utils/weather/weatherIcons";
 import {WiHumidity} from "react-icons/wi";
 import {PiWindDuotone} from "react-icons/pi";
 import {WiDust} from "react-icons/wi";
 import {GiDustCloud} from "react-icons/gi";
 import {CiTempHigh} from "react-icons/ci";
-import {AirPollutionData} from "@/types/airPollutionData";
-import {WeatherData} from "@/types/weatherData";
+import {AirPollutionData} from "@/types/weather/airPollutionData";
+import {WeatherData} from "@/types/weather/weatherData";
 
 interface WeatherComponentProps {
   weather: WeatherData;

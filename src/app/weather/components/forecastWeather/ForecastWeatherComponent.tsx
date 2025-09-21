@@ -1,8 +1,8 @@
-import { ForecastData } from "@/types/forecastData";
+import { ForecastData } from "@/types/weather/forecastData";
 import React from "react";
-import {AirPollutionForecastData} from "@/types/airPoluttionForecastData";
+import {AirPollutionForecastData} from "@/types/weather/airPoluttionForecastData";
 import ForecastItemComponent from "@/app/weather/components/forecastWeather/ForecastItemComponent";
-import {ForecastItemProps} from "@/types/chartForecastWeatherData";
+import {ForecastItemProps} from "@/types/weather/chartForecastWeatherData";
 
 interface ForecastScoreProps {
   chartData: ForecastItemProps[];

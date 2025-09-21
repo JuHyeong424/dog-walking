@@ -10,7 +10,7 @@ import useForecastWeather from "@/hooks/weatherHooks/useForecastWeather";
 import ForecastWeatherComponent from "@/app/weather/components/forecastWeather/ForecastWeatherComponent";
 import ForecastScoreComponent from "@/app/weather/components/forecastWeather/ForecastScoreComponent";
 import {useForecastAirPollution} from "@/hooks/weatherHooks/useForecastAirPollution";
-import {processForecastData} from "@/utils/processForecastData";
+import {processForecastData} from "@/utils/weather/processForecastData";
 
 export default function WeatherPage() {
   const currentLocation = useCurrentLocation();

@@ -1,6 +1,6 @@
-import {checkHumidity, checkPM10, checkPM25, checkTemp, checkWind } from "@/utils/walkingScores";
+import {checkHumidity, checkPM10, checkPM25, checkTemp, checkWind } from "@/utils/weather/walkingScores";
 import WalkingOKScoreComponent from "@/app/weather/components/currentWeather/WalkingOKScoreComponent";
-import totalWalkingScore from "@/utils/totalWalkingScore";
+import totalWalkingScore from "@/utils/weather/totalWalkingScore";
 import WalkingOKGraphComponent from "@/app/weather/components/currentWeather/WalkingOKGraphComponent";
 
 interface WalkingOKProps {

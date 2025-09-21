@@ -1,8 +1,8 @@
-import {getWeatherIcon} from "@/utils/weatherIcons";
+import {getWeatherIcon} from "@/utils/weather/weatherIcons";
 import {FaDroplet} from "react-icons/fa6";
 import {WiDust, WiSmoke} from "react-icons/wi";
 import React from "react";
-import {ForecastItemProps} from "@/types/chartForecastWeatherData";
+import {ForecastItemProps} from "@/types/weather/chartForecastWeatherData";
 
 export default function ForecastItemComponent({ time, weather, temp, pop, pm10, pm25 }: ForecastItemProps) {
   const weatherIcon = getWeatherIcon(weather);
