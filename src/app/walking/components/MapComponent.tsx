@@ -50,14 +50,14 @@ export default function MapComponent() {
         <p className="text-sm text-gray-500">
           좌클릭: 선 그리기 시작/지점 추가 | 우클릭: 그리기 종료
         </p>
+        <button
+          onClick={handleSaveWalkPath}
+          disabled={isLoading}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:bg-gray-400"
+        >
+          {isLoading ? '저장 중...' : '산책 경로 저장'}
+        </button>
       </div>
-      <button
-        onClick={handleSaveWalkPath}
-        disabled={isLoading}
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:bg-gray-400"
-      >
-        {isLoading ? '저장 중...' : '산책 경로 저장'}
-      </button>
       <div>
         <div ref={containerRef} className="w-full h-[400px] rounded-b-lg"/>
       </div>
