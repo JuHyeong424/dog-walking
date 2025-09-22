@@ -18,6 +18,15 @@ export async function GET(request: Request) {
 
     return NextResponse.json(response.data);
   } catch (error) {
-    return NextResponse.json({ error: "Failed to fetch air_pollution"}, { status: 500 });
+    if (error instanceof Error) {
+      console.error("Air pollution API fetch error:", error.message);
+    } else {
+      console.error("Air pollution API fetch error:", error);
+    }
+
+    return NextResponse.json(
+      { error: "Failed to fetch air_pollution" },
+      { status: 500 }
+    );
   }
 }

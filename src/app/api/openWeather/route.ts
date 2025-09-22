@@ -18,6 +18,15 @@ export async function GET(request: Request) {
 
     return NextResponse.json(response.data);
   } catch (error) {
-    return NextResponse.json({ error: "Failed to fetch openWeather"}, { status: 500 });
+    if (error instanceof Error) {
+      console.error("Open Weather API fetch error:", error.message);
+    } else {
+      console.error("Open Weather API fetch error:", error);
+    }
+
+    return NextResponse.json(
+      { error: "Failed to fetch open weather" },
+      { status: 500 }
+    );
   }
 }
