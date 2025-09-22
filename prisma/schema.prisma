@@ -1,0 +1,18 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  // 이 부분을 "mysql"로 변경합니다.
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Walk {
+  id          Int      @id @default(autoincrement())
+  name        String
+  createdAt   DateTime @default(now())
+  distance    Int
+  walkTime    Int
+  coordinates Json     // 이 부분은 변경할 필요 없습니다. Prisma가 알아서 처리해 줍니다.
+}

@@ -21,3 +21,10 @@ export function getTimeHTML(distance: number): string {
 
   return content;
 }
+
+export function calculateWalkTimes(distance: number) {
+  // 도보 분속: 67m/min
+  const walkTime = (distance / 67) | 0;
+
+  return { walkTime };
+}
