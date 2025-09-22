@@ -61,5 +61,5 @@ export default function useKakaoMap({ currentLocation }: useKakaoMapProps) {
     map?.setCenter(markerPosition);
   }, [currentLocation, mapReady]);
 
-  return containerRef;
+  return { containerRef, map: mapRef.current };
 }
