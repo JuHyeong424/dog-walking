@@ -14,13 +14,13 @@ export default function useKakaoDrawingMap(map: kakao.maps.Map | null) {
 
     const deleteClickLine = () => {
       if (clickLine.current) {
-        clickLine.current.setMap(null);
+        clickLine.current?.setMap(null);
         clickLine.current = null;
       }
     };
     const deleteDistance = () => {
       if (distanceOverlay.current) {
-        distanceOverlay.current.setMap(null);
+        distanceOverlay.current?.setMap(null);
         distanceOverlay.current = null;
       }
     };
@@ -33,8 +33,8 @@ export default function useKakaoDrawingMap(map: kakao.maps.Map | null) {
     };
     const showDistance = (content: string, position: kakao.maps.LatLng) => {
       if (distanceOverlay.current) {
-        distanceOverlay.current.setPosition(position);
-        distanceOverlay.current.setContent(content);
+        distanceOverlay.current?.setPosition(position);
+        distanceOverlay.current?.setContent(content);
       } else {
         distanceOverlay.current = new kakao.maps.CustomOverlay({ map, content, position, xAnchor: 0, yAnchor: 0, zIndex: 3 });
       }
@@ -58,40 +58,55 @@ export default function useKakaoDrawingMap(map: kakao.maps.Map | null) {
         deleteDistance();
         deleteCircleDot();
         clickLine.current = new kakao.maps.Polyline({ map, path: [clickPosition], strokeWeight: 3, strokeColor: '#db4040', strokeOpacity: 1, strokeStyle: 'solid' });
-        moveLine.current = new kakao.maps.Polyline({ strokeWeight: 3, strokeColor: '#db4040', strokeOpacity: 0.5, strokeStyle: 'solid' });
+
+        moveLine.current = new kakao.maps.Polyline({ path: [], strokeWeight: 3, strokeColor: '#db4040', strokeOpacity: 0.5, strokeStyle: 'solid' });
+
         displayCircleDot(clickPosition, 0);
       } else {
-        const path = clickLine.current!.getPath();
-        path.push(clickPosition);
-        clickLine.current!.setPath(path);
-        const distance = Math.round(clickLine.current!.getLength());
-        displayCircleDot(clickPosition, distance);
+        const path = clickLine.current?.getPath();
+        if (path) {
+          path.push(clickPosition);
+          clickLine.current?.setPath(path);
+          const distance = Math.round(clickLine.current?.getLength() ?? 0);
+          displayCircleDot(clickPosition, distance);
+        }
       }
     };
     const handleMouseMove = (mouseEvent: kakao.maps.event.MouseEvent) => {
-      if (drawingFlag && clickLine.current) {
+      if (drawingFlag && clickLine.current && moveLine.current) {
         const mousePosition = mouseEvent.latLng;
-        const path = clickLine.current.getPath();
-        const movepath = [path[path.length - 1], mousePosition];
-        moveLine.current!.setPath(movepath);
-        moveLine.current!.setMap(map);
-        const distance = Math.round(clickLine.current.getLength() + moveLine.current!.getLength());
-        const content = `<div class="dotOverlay distanceInfo">총거리 <span class="number">${distance}</span>m</div>`;
-        showDistance(content, mousePosition);
+        const path = clickLine.current?.getPath();
+
+        if (path && path.length > 0) {
+          const movepath = [path[path.length - 1], mousePosition];
+          moveLine.current?.setPath(movepath);
+          moveLine.current?.setMap(map);
+
+          const clickLineLength = clickLine.current?.getLength() ?? 0;
+          const moveLineLength = moveLine.current?.getLength() ?? 0;
+          const distance = Math.round(clickLineLength + moveLineLength);
+
+          const content = `<div class="dotOverlay distanceInfo">총거리 <span class="number">${distance}</span>m</div>`;
+          showDistance(content, mousePosition);
+        }
       }
     };
+
     const handleRightClick = () => {
       if (drawingFlag) {
         setDrawingFlag(false);
         if (moveLine.current) {
-          moveLine.current.setMap(null);
+          moveLine.current?.setMap(null);
           moveLine.current = null;
         }
-        const path = clickLine.current!.getPath();
-        if (path.length > 1) {
-          if (dots.current[dots.current.length - 1]?.distance) {
-            dots.current[dots.current.length - 1].distance!.setMap(null);
+
+        const path = clickLine.current?.getPath();
+        if (path && path.length > 1) {
+          const lastDot = dots.current[dots.current.length - 1];
+          if (lastDot?.distance) {
+            lastDot.distance.setMap(null);
           }
+
           const distance = Math.round(clickLine.current!.getLength());
           const content = getTimeHTML(distance);
           showDistance(content, path[path.length - 1]);

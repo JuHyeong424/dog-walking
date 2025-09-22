@@ -19,7 +19,7 @@ declare global {
     }
 
     class Map {
-      constructor(container: HTMLElement, options: MapOptions);
+      constructor(container: HTMLDivElement | null, options: kakao.maps.MapOptions);
       setCenter(latlng: LatLng): void;
       getCenter(): LatLng;
       setLevel(level: number, options?: { animate?: boolean; duration?: number }): void;
