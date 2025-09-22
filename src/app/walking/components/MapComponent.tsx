@@ -3,12 +3,16 @@ import useCurrentLocation from "@/hooks/useCurrentLocation";
 import useKakaoDrawingMap from "@/hooks/useKakaoDrawingMap";
 import "@/styles/mapStyles.css";
 import {useState} from "react";
+import {useQueryClient} from "@tanstack/react-query";
 
 export default function MapComponent() {
   const currentLocation = useCurrentLocation();
   const {containerRef, map} = useKakaoMap({currentLocation});
   const {walkData, clearDrawing} = useKakaoDrawingMap(map);
   const [isLoading, setIsLoading] = useState(false);
+  const queryClient = useQueryClient();
+
+  console.log("walk", walkData)
 
   const handleSaveWalkPath = async () => {
     if (!walkData) {
@@ -29,6 +33,8 @@ export default function MapComponent() {
       if (!response.ok) {
         throw new Error('경로 저장에 실패했습니다.');
       }
+
+      await queryClient.invalidateQueries({ queryKey: ['walkHistory'] });
 
       const result = await response.json();
       console.log('저장 성공: ', result);
