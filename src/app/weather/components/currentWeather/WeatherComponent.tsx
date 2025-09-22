@@ -11,7 +11,7 @@ import {WeatherData} from "@/types/weather/weatherData";
 
 interface WeatherComponentProps {
   weather: WeatherData;
-  currentLocation: { lat: number | undefined; lon: number | undefined } | null;
+  currentLocation: { lat: number | undefined; lng: number | undefined } | null;
   isWeatherLoading: boolean;
   isWeatherError: boolean;
   airPollution: AirPollutionData;

@@ -16,22 +16,22 @@ export default function WeatherPage() {
   const currentLocation = useCurrentLocation();
   const { data: weather, isLoading: isWeatherLoading, isError: isWeatherError} = useOpenWeather({
     lat: currentLocation?.lat,
-    lon: currentLocation?.lon
+    lon: currentLocation?.lng
   });
   const { data: airPollution, isLoading: isAirPollutionLoading, isError: isAirPollutionError} = useAirPollution({
     lat: currentLocation?.lat,
-    lon: currentLocation?.lon
+    lon: currentLocation?.lng
   });
   const koreaTime = useCurrentDate();
 
   const { data: forecastWeather, isLoading: isForecastWeatherIsLoading, isError: isForecastWeatherIsError } = useForecastWeather({
     lat: currentLocation?.lat,
-    lon: currentLocation?.lon
+    lon: currentLocation?.lng
   });
 
   const { data: forecastAirPollution, isLoading: isForecastAirPollutionIsLoading, isError: isForecastAirPollutionIsError } = useForecastAirPollution({
     lat: currentLocation?.lat,
-    lon: currentLocation?.lon
+    lon: currentLocation?.lng
   });
 
   const chartData = processForecastData(forecastWeather, forecastAirPollution);
