@@ -1,15 +1,21 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
+type DeleteContext = {
+  params: {
+    id: string;
+  };
+};
+
 export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  { params }: DeleteContext
 ) {
-  const id = params.id;
+  const { id } = params;
 
   try {
     await prisma.walk.delete({
-      where: { id: id },
+      where: { id },
     });
 
     return NextResponse.json({ message: '산책 기록이 성공적으로 삭제되었습니다.' }, { status: 200 });
