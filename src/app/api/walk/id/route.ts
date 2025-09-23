@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
-interface RouteContext {
+interface HandlerContext {
   params: {
     id: string;
   };
@@ -9,13 +9,13 @@ interface RouteContext {
 
 export async function DELETE(
   request: NextRequest,
-  { params }: RouteContext
+  context: HandlerContext
 ) {
-  const { id } = params;
+  const id = context.params.id;
 
   try {
     await prisma.walk.delete({
-      where: { id },
+      where: { id: id },
     });
 
     return NextResponse.json({ message: '산책 기록이 성공적으로 삭제되었습니다.' }, { status: 200 });
