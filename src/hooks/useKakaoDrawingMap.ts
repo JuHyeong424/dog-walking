@@ -35,7 +35,7 @@ export default function useKakaoDrawingMap(map: kakao.maps.Map | null) {
       distanceOverlay.current?.setPosition(position);
       distanceOverlay.current?.setContent(content);
     } else {
-      distanceOverlay.current = new kakao.maps.CustomOverlay({ map, content, position, xAnchor: 0, yAnchor: 0, zIndex: 3 });
+      distanceOverlay.current = new kakao.maps.CustomOverlay({ map: map ?? undefined, content, position, xAnchor: 0, yAnchor: 0, zIndex: 3 });
     }
   };
   const displayCircleDot = (position: kakao.maps.LatLng, distance: number) => {
