@@ -8,8 +8,7 @@ export default function useKakaoDrawingMap(map: kakao.maps.Map | null) {
   const moveLine = useRef<kakao.maps.Polyline | null>(null);
   const distanceOverlay = useRef<kakao.maps.CustomOverlay | null>(null);
   const dots = useRef<{ circle: kakao.maps.CustomOverlay, distance: kakao.maps.CustomOverlay | null }[]>([]);
-
-  const [walkData, setWalkData] = useState<WalkData | null>(null);
+  const [walkData, setWalkData] = useState<Omit<WalkData, "id" | "name" | "createdAt"> | null>(null);
 
   const deleteClickLine = () => {
     if (clickLine.current) {
@@ -114,7 +113,7 @@ export default function useKakaoDrawingMap(map: kakao.maps.Map | null) {
           const distance = Math.round(clickLine.current!.getLength());
 
           const { walkTime } = calculateWalkTimes(distance);
-          const newWalkData: WalkData = {
+          const newWalkData = {
             coordinates: path.map(latlng => ({
               lat: latlng.getLat(),
               lng: latlng.getLng(),
@@ -122,7 +121,6 @@ export default function useKakaoDrawingMap(map: kakao.maps.Map | null) {
             distance,
             walkTime,
           };
-
           setWalkData(newWalkData);
 
           const content = getTimeHTML(distance);
