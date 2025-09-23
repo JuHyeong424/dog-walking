@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
-type DeleteContext = {
+interface RouteContext {
   params: {
     id: string;
   };
-};
+}
 
 export async function DELETE(
   request: NextRequest,
-  { params }: DeleteContext
+  { params }: RouteContext
 ) {
   const { id } = params;
 
