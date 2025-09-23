@@ -8,13 +8,12 @@ export default function IndividualWalkingHistory() {
   const { data: walks, isLoading: isHistoryLoading, isError: isHistoryError } = useWalkingHistory();
   const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString('ko-KR');
 
-
   if (isHistoryLoading) return <div>경로 기록을 불러오는 중입니다</div>
   if (isHistoryError) return <div>경로 기록을 불러오지 못했습니다.</div>
 
   return (
     <>
-      {walks.map((walk: WalkData) => (
+      {walks && walks.map((walk: WalkData) => (
         <div
           key={walk.id}
           className="border border-gray-300 rounded-xl p-4 my-4"
