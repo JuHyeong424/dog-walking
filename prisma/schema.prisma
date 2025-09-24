@@ -3,8 +3,7 @@ generator client {
 }
 
 datasource db {
-  // 이 부분을 "mysql"로 변경합니다.
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
