@@ -1,5 +1,5 @@
 import WalkingCurrentInfoComponent from "@/app/walking/components/WalkingCurrentInfoComponent";
-import useWalkingHistory from "@/hooks/useWalkingHistory";
+import useWalkingHistory from "@/hooks/walkHooks/useWalkingHistory";
 import {calculateCaloriesBurned, calculateWalkDifficulty} from "@/utils/walkCalculations";
 
 export default function WalkingInformationComponent() {

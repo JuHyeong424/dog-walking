@@ -1,6 +1,6 @@
-import useKakaoMap from "@/hooks/useKakaoMap";
+import useKakaoMap from "@/hooks/walkHooks/useKakaoMap";
 import useCurrentLocation from "@/hooks/useCurrentLocation";
-import useKakaoDrawingMap from "@/hooks/useKakaoDrawingMap";
+import useKakaoDrawingMap from "@/hooks/walkHooks/useKakaoDrawingMap";
 import "@/styles/mapStyles.css";
 import {useState} from "react";
 import {useQueryClient} from "@tanstack/react-query";
