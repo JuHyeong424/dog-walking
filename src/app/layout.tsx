@@ -1,6 +1,7 @@
 import Link from "next/link";
 import "@/app/globals.css";
 import Providers from "@/app/providers";
+import {KakaoMapScriptProvider} from "@/context/KakaoMapScriptProvider";
 
 export default function RootLayout({children}: { children: React.ReactNode }) {
   return (
@@ -25,7 +26,9 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
     </header>
     <main>
       <div className="p-4">
-        <Providers>{children}</Providers>
+        <KakaoMapScriptProvider>
+          <Providers>{children}</Providers>
+        </KakaoMapScriptProvider>
       </div>
     </main>
     </body>

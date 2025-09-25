@@ -1,5 +1,3 @@
-import {functionGridItems} from "@/data/functionGridData";
-import FunctionGridComponent from "@/components/home/FunctionGridComponent";
 import {usageMethodData} from "@/data/usageMethodData";
 import UsageMethodGridComponent from "@/components/home/UsageMethodGridComponent";
 
