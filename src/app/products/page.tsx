@@ -1,7 +1,9 @@
+import ProductListComponent from "@/app/products/components/ProductListComponent";
+
 export default function ProudctPage() {
   return (
     <div>
-      product
+      <ProductListComponent />
     </div>
   )
 }

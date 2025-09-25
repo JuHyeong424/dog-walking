@@ -1,9 +1,9 @@
 import {CiLocationOn} from "react-icons/ci";
 import {GiPathDistance} from "react-icons/gi";
 import {IoIosTimer} from "react-icons/io";
-import useWalkingHistory from "@/hooks/useWalkingHistory";
+import useWalkingHistory from "@/hooks/walkHooks/useWalkingHistory";
 import {WalkData} from "@/types/walkData";
-import {useDeleteWalk} from "@/hooks/useDeleteWalk";
+import {useDeleteWalk} from "@/hooks/walkHooks/useDeleteWalk";
 
 export default function IndividualWalkingHistoryComponent() {
   const { data: walks, isLoading: isHistoryLoading, isError: isHistoryError } = useWalkingHistory();
