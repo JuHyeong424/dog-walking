@@ -19,7 +19,7 @@ export default function WalkingInformationComponent() {
 
   return (
     <div className="bg-white rounded-lg px-4 py-8 shadow-sm">
-      <h1 className="text-2xl font-bold pb-4">현재 산책 정보</h1>
+      <h1 className="text-2xl font-bold pb-4">최근 산책 정보</h1>
       <div className="flex flex-col gap-6">
         <WalkingCurrentInfoComponent
           title="경과 시간"
