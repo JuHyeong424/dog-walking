@@ -39,7 +39,7 @@ export default function ProductListComponent() {
         {products?.map((product) => (
           <div key={product.productId} className="border rounded-lg overflow-hidden shadow-lg">
             <a href={product.link} target="_blank" rel="noopener noreferrer">
-              <Image src={product.image} alt={product.title.replace(/<[^>]*>?/gm, '')} className="w-full h-48 object-cover" />
+              <img src={product.image} alt={product.title.replace(/<[^>]*>?/gm, '')} className="w-full h-48 object-cover" />
               <div className="p-4">
                 <h2
                   className="text-lg font-semibold truncate"
