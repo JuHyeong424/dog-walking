@@ -2,17 +2,44 @@ import useKakaoMap from "@/hooks/walkHooks/useKakaoMap";
 import useCurrentLocation from "@/hooks/useCurrentLocation";
 import useKakaoDrawingMap from "@/hooks/walkHooks/useKakaoDrawingMap";
 import "@/styles/mapStyles.css";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useQueryClient} from "@tanstack/react-query";
+import {createClient} from "@/lib/supabase/client";
+import {DogProfile} from "@/types/dogProfile";
 
 export default function MapComponent() {
   const currentLocation = useCurrentLocation();
   const {containerRef, map} = useKakaoMap({currentLocation});
-  const {walkData, clearDrawing} = useKakaoDrawingMap(map);
+
+  const [myDogs, setMyDogs] = useState<DogProfile[]>([]);
+  const [selectedDogId, setSelectedDogId] = useState<string | null>(null);
+
+  const {walkData, clearDrawing} = useKakaoDrawingMap(map, selectedDogId);
   const [isLoading, setIsLoading] = useState(false);
   const queryClient = useQueryClient();
 
   console.log("walk", walkData)
+  const supabase = createClient();
+
+  useEffect(() => {
+    const fetchMyDogs = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data: profiles } = await supabase
+          .from('dog_profiles')
+          .select('*')
+          .eq('user_id', user.id);
+
+        if (profiles) {
+          setMyDogs(profiles);
+          if (profiles.length > 0) {
+            setSelectedDogId(profiles[0].id);
+          }
+        }
+      }
+    };
+    fetchMyDogs();
+  }, [supabase]);
 
   const handleSaveWalkPath = async () => {
     if (!walkData) {
@@ -51,11 +78,38 @@ export default function MapComponent() {
 
   return (
     <div className="bg-white w-full rounded-xl shadow-sm">
-      <div className="flex justify-between items-center p-4">
+      <div className="flex justify-between items-center p-4 gap-4">
         <h2 className="font-bold">실시간 지도</h2>
-        <p className="text-sm text-gray-500">
-          좌클릭: 선 그리기 시작/지점 추가 | 우클릭: 그리기 종료
-        </p>
+
+        <div className="">
+          <select
+            id="dog-select"
+            value={selectedDogId || ''}
+            onChange={(e) => setSelectedDogId(e.target.value)}
+            disabled={myDogs.length === 0}
+            className="border border-gray-500 p-2 rounded-md"
+          >
+            {myDogs.length > 0 ? (
+              myDogs.map((dog) => (
+                <option key={dog.id} value={dog.id}>
+                  {dog.name}
+                </option>
+              ))
+            ) : (
+              <option>등록된 반려견이 없습니다</option>
+            )}
+          </select>
+        </div>
+
+        <div className="flex flex-col">
+          <p className="text-sm text-gray-500">
+            좌클릭: 선 그리기 시작/지점 추가
+          </p>
+          <p className="text-sm text-gray-500">
+            우클릭: 그리기 종료
+          </p>
+        </div>
+
         <button
           onClick={handleSaveWalkPath}
           disabled={isLoading}

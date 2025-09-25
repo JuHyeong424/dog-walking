@@ -1,9 +1,45 @@
+"use client";
+
 import Link from "next/link";
 import "@/app/globals.css";
 import Providers from "@/app/providers";
-import {KakaoMapScriptProvider} from "@/context/KakaoMapScriptProvider";
+import { KakaoMapScriptProvider } from "@/context/KakaoMapScriptProvider";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
+import type { User } from "@supabase/supabase-js";
 
-export default function RootLayout({children}: { children: React.ReactNode }) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
+  const router = useRouter();
+  const supabase = createClient();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data } = await supabase.auth.getUser();
+      setUser(data.user);
+    };
+
+    fetchUser();
+
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user ?? null);
+      }
+    );
+
+    return () => {
+      authListener?.subscription.unsubscribe();
+    };
+  }, [supabase]);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    alert("로그아웃 되었습니다.");
+    router.push("/");
+    router.refresh();
+  };
+
   return (
     <html lang="en">
     <body className="min-h-screen flex flex-col">
@@ -20,12 +56,16 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
           <Link href="/community">커뮤니티</Link>
         </div>
         <div className="absolute right-4 h-2 bg-blue-500 text-white rounded-xl p-5 flex items-center justify-center">
-          <Link href="/login">Login</Link>
+          {user ? (
+            <button onClick={handleLogout}>Logout</button>
+          ) : (
+            <Link href="/login">Login</Link>
+          )}
         </div>
       </nav>
     </header>
-    <main>
-      <div className="p-4">
+    <main className="flex-grow flex items-center justify-center bg-gray-100">
+      <div className="w-full">
         <KakaoMapScriptProvider>
           <Providers>{children}</Providers>
         </KakaoMapScriptProvider>
@@ -33,5 +73,5 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
     </main>
     </body>
     </html>
-  )
+  );
 }
