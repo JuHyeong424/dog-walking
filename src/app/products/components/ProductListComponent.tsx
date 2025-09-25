@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useProducts } from '@/hooks/productHooks/useProducts';
-import Image from "next/image";
 
 export default function ProductListComponent() {
   const [searchTerm, setSearchTerm] = useState('강아지 간식'); // 기본 검색어
