@@ -1,6 +1,6 @@
 export interface WalkData {
   coordinates: { lat: number; lng: number }[];
-  id: string;
+  id: number;
   name: string;
   distance: number;
   walkTime: number;

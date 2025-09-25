@@ -145,8 +145,14 @@ export async function DELETE(request: Request) {
     // 성공적으로 삭제되었음을 클라이언트에 알립니다.
     return NextResponse.json({ message: '산책 기록이 성공적으로 삭제되었습니다.' }, { status: 200 });
   } catch (error) {
+    if (error instanceof Error) {
+      console.error("DELETE /api/walk error:", error.message);
+    } else {
+      console.error("DELETE /api/walk error:", error);
+    }
+
     return NextResponse.json(
-      { error: "산책 기록 삭제에 실패했습니다." },
+      { error: "산책 경로 삭제에 실패했습니다." },
       { status: 500 }
     );
   }
