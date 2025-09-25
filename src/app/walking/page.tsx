@@ -3,7 +3,7 @@
 import MapComponent from "@/app/walking/components/MapComponent";
 import WalkingControlComponent from "@/app/walking/components/WalkingControlComponent";
 import WalkingInformationComponent from "@/app/walking/components/WalkingInformationComponent";
-import LatestWalkingHistory from "@/app/walking/components/LatestWalkingHistory";
+import LatestWalkingHistoryComponent from "@/app/walking/components/LatestWalkingHistoryComponent";
 
 export default function WalkingPage() {
   return (
@@ -16,7 +16,7 @@ export default function WalkingPage() {
       <div className="flex flex-row gap-8">
         <div className="flex flex-col w-5/8 gap-8">
           <MapComponent />
-          <LatestWalkingHistory />
+          <LatestWalkingHistoryComponent />
         </div>
         <div className="flex flex-col w-3/8 gap-8">
           <WalkingControlComponent />

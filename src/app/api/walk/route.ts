@@ -47,12 +47,8 @@ async function getPlaceName(lat: number, lng: number): Promise<string | null> {
   }
 }
 
-
-// --- Prisma 로직을 Supabase로 수정한 부분 ---
-
 export async function GET() {
   try {
-    // Prisma: prisma.walk.findMany(...)
     // Supabase: supabase.from('테이블명').select('컬럼')
     const { data: walks, error } = await supabase
       .from('walk') // 'walk' 테이블에서
@@ -93,7 +89,6 @@ export async function POST(request: Request) {
 
     const walkName = `${startName || '알 수 없는 위치'}에서 ${endName || '알 수 없는 위치'}까지의 산책`;
 
-    // Prisma: prisma.walk.create(...)
     // Supabase: supabase.from('테이블명').insert({ 데이터 })
     const { data: savedWalk, error } = await supabase
       .from('walk') // 'walk' 테이블에
@@ -123,6 +118,35 @@ export async function POST(request: Request) {
 
     return NextResponse.json(
       { error: "산책 경로 저장에 실패했습니다." },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    // 요청 본문에서 id를 추출합니다.
+    const { id } = await request.json();
+
+    if (!id) {
+      return NextResponse.json({ error: '삭제할 ID가 필요합니다.' }, { status: 400 });
+    }
+
+    // Supabase를 사용하여 해당 id의 데이터를 삭제합니다.
+    const { error } = await supabase
+      .from('walk')
+      .delete()
+      .match({ id }); // id가 일치하는 행을 삭제
+
+    if (error) {
+      throw error; // Supabase에서 오류가 발생하면 에러를 던집니다.
+    }
+
+    // 성공적으로 삭제되었음을 클라이언트에 알립니다.
+    return NextResponse.json({ message: '산책 기록이 성공적으로 삭제되었습니다.' }, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "산책 기록 삭제에 실패했습니다." },
       { status: 500 }
     );
   }
