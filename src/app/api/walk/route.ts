@@ -1,6 +1,6 @@
 import { WalkData } from "@/types/walkData";
 import { NextResponse } from "next/server";
-import supabase from '@/lib/supabase';
+import { createClient } from '@/lib/supabase/server';
 
 async function getPlaceName(lat: number, lng: number): Promise<string | null> {
   const KAKAO_API_KEY = process.env.KAKAO_REST_API_KEY;
@@ -50,7 +50,7 @@ async function getPlaceName(lat: number, lng: number): Promise<string | null> {
 export async function GET() {
   try {
     // Supabase: supabase.from('테이블명').select('컬럼')
-    const { data: walks, error } = await supabase
+    const { data: walks, error } = await createClient()
       .from('walk') // 'walk' 테이블에서
       .select('*')   // 모든 컬럼을
       .order('createdAt', { ascending: false }); // 최신순으로 정렬하여 조회
@@ -90,7 +90,7 @@ export async function POST(request: Request) {
     const walkName = `${startName || '알 수 없는 위치'}에서 ${endName || '알 수 없는 위치'}까지의 산책`;
 
     // Supabase: supabase.from('테이블명').insert({ 데이터 })
-    const { data: savedWalk, error } = await supabase
+    const { data: savedWalk, error } = await createClient()
       .from('walk') // 'walk' 테이블에
       .insert({   // 새로운 데이터를 삽입
         name: walkName,
@@ -133,7 +133,7 @@ export async function DELETE(request: Request) {
     }
 
     // Supabase를 사용하여 해당 id의 데이터를 삭제합니다.
-    const { error } = await supabase
+    const { error } = await createClient()
       .from('walk')
       .delete()
       .match({ id }); // id가 일치하는 행을 삭제

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import {calculateWalkTimes, getTimeHTML} from "@/utils/mapUtils";
 import {WalkData} from "@/types/walkData";
 
-export default function useKakaoDrawingMap(map: kakao.maps.Map | null) {
+export default function useKakaoDrawingMap(map: kakao.maps.Map | null, dogId: string | null) {
   const [drawingFlag, setDrawingFlag] = useState(false);
   const clickLine = useRef<kakao.maps.Polyline | null>(null);
   const moveLine = useRef<kakao.maps.Polyline | null>(null);
@@ -120,6 +120,7 @@ export default function useKakaoDrawingMap(map: kakao.maps.Map | null) {
             })),
             distance,
             walkTime,
+            dog_id: dogId!,
           };
           setWalkData(newWalkData);
 

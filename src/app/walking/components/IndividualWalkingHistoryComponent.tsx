@@ -10,7 +10,7 @@ export default function IndividualWalkingHistoryComponent() {
   const { mutate: deleteWalk, isPending: isDeleting  } = useDeleteWalk();
 
   const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString('ko-KR');
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: string) => {
     if (!confirm("산책 기록을 삭제하시겠습니까?")) return;
     deleteWalk(id);
   };

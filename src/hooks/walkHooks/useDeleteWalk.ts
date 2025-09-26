@@ -1,6 +1,6 @@
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 
-async function deleteWalkAPI(id: number) {
+async function deleteWalkAPI(id: string) {
   const res = await fetch("/api/walk", {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
