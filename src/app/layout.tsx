@@ -6,13 +6,12 @@ import Providers from "@/app/providers";
 import { KakaoMapScriptProvider } from "@/context/KakaoMapScriptProvider";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 import type { User } from "@supabase/supabase-js";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
-  const supabase = createClient();
 
   useEffect(() => {
     const fetchUser = async () => {
