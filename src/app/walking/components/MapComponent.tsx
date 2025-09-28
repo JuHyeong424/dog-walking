@@ -2,29 +2,38 @@ import useKakaoMap from "@/hooks/walkHooks/useKakaoMap";
 import useCurrentLocation from "@/hooks/useCurrentLocation";
 import useKakaoDrawingMap from "@/hooks/walkHooks/useKakaoDrawingMap";
 import "@/styles/mapStyles.css";
-import {useEffect, useState} from "react";
+import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {useQueryClient} from "@tanstack/react-query";
 import {createClient} from "@/lib/supabase/client";
 import {DogProfile} from "@/types/dogProfile";
 
-export default function MapComponent() {
+const supabase = createClient();
+
+interface MapComponentProps {
+  selectedDogId: string | null;
+  setSelectedDogId: Dispatch<SetStateAction<string | null>>;
+}
+
+export default function MapComponent({ selectedDogId, setSelectedDogId}: MapComponentProps) {
   const currentLocation = useCurrentLocation();
   const {containerRef, map} = useKakaoMap({currentLocation});
 
   const [myDogs, setMyDogs] = useState<DogProfile[]>([]);
-  const [selectedDogId, setSelectedDogId] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
 
-  const {walkData, clearDrawing} = useKakaoDrawingMap(map, selectedDogId);
+  const {walkData, clearDrawing} = useKakaoDrawingMap(map, selectedDogId, userId);
   const [isLoading, setIsLoading] = useState(false);
   const queryClient = useQueryClient();
 
   console.log("walk", walkData)
-  const supabase = createClient();
 
   useEffect(() => {
     const fetchMyDogs = async () => {
       const { data: { user } } = await supabase.auth.getUser();
+
       if (user) {
+        setUserId(user.id);
+
         const { data: profiles } = await supabase
           .from('dog_profiles')
           .select('*')
@@ -39,11 +48,16 @@ export default function MapComponent() {
       }
     };
     fetchMyDogs();
-  }, [supabase]);
+  }, [setSelectedDogId]);
 
   const handleSaveWalkPath = async () => {
     if (!walkData) {
       alert("저장할 산책 경로가 없습니다.");
+      return;
+    }
+
+    if (!selectedDogId) {
+      alert("산책을 기록할 반려견을 선택해주세요.");
       return;
     }
 
@@ -54,7 +68,11 @@ export default function MapComponent() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(walkData),
+        credentials: 'include',
+        body: JSON.stringify({
+          ...walkData,
+          dog_id: selectedDogId,
+        }),
       });
 
       if (!response.ok) {

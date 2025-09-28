@@ -48,17 +48,17 @@ async function getPlaceName(lat: number, lng: number): Promise<string | null> {
 }
 
 export async function GET() {
-  try {
-    // Supabase: supabase.from('테이블명').select('컬럼')
-    const { data: walks, error } = await createClient()
-      .from('walk') // 'walk' 테이블에서
-      .select('*')   // 모든 컬럼을
-      .order('createdAt', { ascending: false }); // 최신순으로 정렬하여 조회
+  const supabase = await createClient();
 
-    // Supabase 쿼리에서는 항상 error 객체가 있는지 확인해야 합니다.
+  try {
+    const { data: walks, error } = await supabase
+      .from('walk')
+      .select('*')
+      .order('created_at', { ascending: false });
+
     if (error) {
       console.error("Supabase GET error:", error);
-      throw error; // 에러를 던져서 아래 catch 블록에서 처리하도록 함
+      throw error;
     }
 
     return NextResponse.json(walks, { status: 200 });
@@ -72,15 +72,23 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  try {
-    const body: WalkData = await request.json();
+  const supabase = await createClient();
 
-    if (!body.coordinates || body.coordinates.length < 2 || !body.distance) {
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      return NextResponse.json({ error: '인증되지 않은 사용자입니다.' }, { status: 401 });
+    }
+
+    const body: WalkData = await request.json();
+    const { coordinates, distance, walk_time, dog_id } = body;
+
+    if (!coordinates || coordinates.length < 2 || !distance || !dog_id) {
       return NextResponse.json({ error: '잘못된 경로 데이터입니다.' }, { status: 400 });
     }
 
-    const startPoint = body.coordinates[0];
-    const endPoint = body.coordinates[body.coordinates.length - 1];
+    const startPoint = coordinates[0];
+    const endPoint = coordinates[body.coordinates.length - 1];
 
     const [startName, endName] = await Promise.all([
       getPlaceName(startPoint.lat, startPoint.lng),
@@ -89,25 +97,24 @@ export async function POST(request: Request) {
 
     const walkName = `${startName || '알 수 없는 위치'}에서 ${endName || '알 수 없는 위치'}까지의 산책`;
 
-    // Supabase: supabase.from('테이블명').insert({ 데이터 })
-    const { data: savedWalk, error } = await createClient()
-      .from('walk') // 'walk' 테이블에
-      .insert({   // 새로운 데이터를 삽입
+    const { data: savedWalk, error } = await supabase
+      .from('walk')
+      .insert({
+        user_id: user.id,
+        dog_id: dog_id,
         name: walkName,
-        distance: body.distance,
-        walkTime: body.walkTime,
-        coordinates: body.coordinates,
+        distance: distance,
+        walk_time: walk_time,
+        coordinates: coordinates,
       })
-      .select() // 삽입된 데이터를 반환받기 위해 .select()를 추가
-      .single(); // 단일 객체로 받기 위해 .single()을 추가
+      .select()
+      .single();
 
-    // Supabase 쿼리에서는 항상 error 객체가 있는지 확인해야 합니다.
     if (error) {
       console.error("Supabase POST error:", error);
-      throw error; // 에러를 던져서 아래 catch 블록에서 처리하도록 함
+      throw error;
     }
 
-    // 성공 시, 요청 본문(body)이 아닌 DB에 저장된 실제 데이터(savedWalk)를 반환합니다.
     return NextResponse.json({ message: '산책 경로가 성공적으로 저장되었습니다.', data: savedWalk }, { status: 201 });
   } catch (error) {
     if (error instanceof Error) {
@@ -124,25 +131,33 @@ export async function POST(request: Request) {
 }
 
 export async function DELETE(request: Request) {
+  const supabase = await createClient();
+
   try {
-    // 요청 본문에서 id를 추출합니다.
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json({ error: '인증되지 않은 사용자입니다.' }, { status: 401 });
+    }
+
     const { id } = await request.json();
 
     if (!id) {
       return NextResponse.json({ error: '삭제할 ID가 필요합니다.' }, { status: 400 });
     }
 
-    // Supabase를 사용하여 해당 id의 데이터를 삭제합니다.
-    const { error } = await createClient()
+    const { error } = await supabase
       .from('walk')
       .delete()
-      .match({ id }); // id가 일치하는 행을 삭제
+      .match({
+        id: id,
+        user_id: user.id
+      });
 
     if (error) {
-      throw error; // Supabase에서 오류가 발생하면 에러를 던집니다.
+      throw error;
     }
 
-    // 성공적으로 삭제되었음을 클라이언트에 알립니다.
     return NextResponse.json({ message: '산책 기록이 성공적으로 삭제되었습니다.' }, { status: 200 });
   } catch (error) {
     if (error instanceof Error) {

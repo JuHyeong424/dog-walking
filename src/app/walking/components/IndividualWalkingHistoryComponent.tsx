@@ -5,8 +5,12 @@ import useWalkingHistory from "@/hooks/walkHooks/useWalkingHistory";
 import {WalkData} from "@/types/walkData";
 import {useDeleteWalk} from "@/hooks/walkHooks/useDeleteWalk";
 
-export default function IndividualWalkingHistoryComponent() {
-  const { data: walks, isLoading: isHistoryLoading, isError: isHistoryError } = useWalkingHistory();
+interface IndividualWalkingHistoryProps {
+  selectedDogId: string | null;
+}
+
+export default function IndividualWalkingHistoryComponent({ selectedDogId }: IndividualWalkingHistoryProps) {
+  const { data: walks, isLoading: isHistoryLoading, isError: isHistoryError } = useWalkingHistory(selectedDogId);
   const { mutate: deleteWalk, isPending: isDeleting  } = useDeleteWalk();
 
   const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString('ko-KR');
@@ -15,8 +19,10 @@ export default function IndividualWalkingHistoryComponent() {
     deleteWalk(id);
   };
 
-  if (isHistoryLoading) return <div>경로 기록을 불러오는 중입니다</div>
-  if (isHistoryError) return <div>경로 기록을 불러오지 못했습니다.</div>
+  if (!selectedDogId) return <div>산책 기록을 확인할 반려견을 선택해주세요.</div>;
+  if (isHistoryLoading) return <div>경로 기록을 불러오는 중입니다...</div>;
+  if (isHistoryError) return <div>경로 기록을 불러오지 못했습니다.</div>;
+  if (!walks || walks.length === 0) return <div>선택된 반려견의 산책 기록이 없습니다.</div>;
 
   return (
     <>
@@ -32,7 +38,7 @@ export default function IndividualWalkingHistoryComponent() {
               </div>
               <div>
                 <h3 className="text-base font-bold cursor-pointer">{walk.name}</h3>
-                <p className="text-gray-400">{formatDate(walk.createdAt)}</p>
+                <p className="text-gray-400">{formatDate(walk.created_at)}</p>
               </div>
             </div>
           </div>
@@ -45,7 +51,7 @@ export default function IndividualWalkingHistoryComponent() {
               </div>
               <div className="flex items-center">
                 <IoIosTimer className="mr-1 text-gray-500"/>
-                <span className="mr-1 text-gray-500">{walk.walkTime}</span>
+                <span className="mr-1 text-gray-500">{walk.walk_time}</span>
                 <span className="font-bold">분</span>
               </div>
             </div>

@@ -4,8 +4,11 @@ import MapComponent from "@/app/walking/components/MapComponent";
 import WalkingControlComponent from "@/app/walking/components/WalkingControlComponent";
 import WalkingInformationComponent from "@/app/walking/components/WalkingInformationComponent";
 import LatestWalkingHistoryComponent from "@/app/walking/components/LatestWalkingHistoryComponent";
+import {useState} from "react";
 
 export default function WalkingPage() {
+  const [selectedDogId, setSelectedDogId] = useState<string | null>(null);
+
   return (
     <div className="bg-gray-100 p-20">
       <div>
@@ -15,12 +18,12 @@ export default function WalkingPage() {
 
       <div className="flex flex-row gap-8">
         <div className="flex flex-col w-5/8 gap-8">
-          <MapComponent />
-          <LatestWalkingHistoryComponent />
+          <MapComponent selectedDogId={selectedDogId} setSelectedDogId={setSelectedDogId} />
+          <LatestWalkingHistoryComponent selectedDogId={selectedDogId} />
         </div>
         <div className="flex flex-col w-3/8 gap-8">
           <WalkingControlComponent />
-          <WalkingInformationComponent />
+          <WalkingInformationComponent selectedDogId={selectedDogId} />
         </div>
       </div>
     </div>

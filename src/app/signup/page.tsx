@@ -5,11 +5,12 @@ import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
+const supabase = createClient();
+
 export default function SignUpPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
-  const supabase = createClient();
 
   const handleSignUp = async () => {
     if (!email || !password) {

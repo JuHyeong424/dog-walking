@@ -5,11 +5,12 @@ import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
+const supabase = createClient();
+
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
-  const supabase = createClient();
 
   const handleSignIn = async () => {
     console.log('로그인 시도:', { email, password });
