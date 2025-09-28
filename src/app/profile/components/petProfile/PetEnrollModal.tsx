@@ -6,7 +6,9 @@ import {useEffect, useState} from "react";
 import useProfilePostHooks from "@/hooks/profileHooks/useProfilePostHooks";
 import {DogProfileCreate} from "@/types/dogProfile";
 import {User} from "@supabase/supabase-js";
-import {supabase} from "@/lib/supabase/client";
+import {createClient} from "@/lib/supabase/client";
+
+const supabase = createClient();
 
 interface PetEnrollProps {
   setEnrollPetModal: (value: boolean) => void;

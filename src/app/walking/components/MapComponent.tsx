@@ -2,17 +2,23 @@ import useKakaoMap from "@/hooks/walkHooks/useKakaoMap";
 import useCurrentLocation from "@/hooks/useCurrentLocation";
 import useKakaoDrawingMap from "@/hooks/walkHooks/useKakaoDrawingMap";
 import "@/styles/mapStyles.css";
-import {useEffect, useState} from "react";
+import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {useQueryClient} from "@tanstack/react-query";
-import {supabase} from "@/lib/supabase/client";
+import {createClient} from "@/lib/supabase/client";
 import {DogProfile} from "@/types/dogProfile";
 
-export default function MapComponent() {
+const supabase = createClient();
+
+interface MapComponentProps {
+  selectedDogId: string | null;
+  setSelectedDogId: Dispatch<SetStateAction<string | null>>;
+}
+
+export default function MapComponent({ selectedDogId, setSelectedDogId}: MapComponentProps) {
   const currentLocation = useCurrentLocation();
   const {containerRef, map} = useKakaoMap({currentLocation});
 
   const [myDogs, setMyDogs] = useState<DogProfile[]>([]);
-  const [selectedDogId, setSelectedDogId] = useState<string | null>(null);
 
   const {walkData, clearDrawing} = useKakaoDrawingMap(map, selectedDogId);
   const [isLoading, setIsLoading] = useState(false);
@@ -46,6 +52,11 @@ export default function MapComponent() {
       return;
     }
 
+    if (!selectedDogId) {
+      alert("산책을 기록할 반려견을 선택해주세요.");
+      return;
+    }
+
     setIsLoading(true);
     try {
       const response = await fetch('/api/walk', {
@@ -53,7 +64,11 @@ export default function MapComponent() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(walkData),
+        credentials: 'include',
+        body: JSON.stringify({
+          ...walkData,
+          dog_id: selectedDogId,
+        }),
       });
 
       if (!response.ok) {

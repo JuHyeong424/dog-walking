@@ -4,6 +4,7 @@ const deleteWalkAPI = async (id: string)=> {
   const res = await fetch("/api/walk", {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
+    credentials: 'include',
     body: JSON.stringify({ id }),
   });
 

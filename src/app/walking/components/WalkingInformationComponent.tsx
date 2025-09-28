@@ -2,8 +2,12 @@ import WalkingCurrentInfoComponent from "@/app/walking/components/WalkingCurrent
 import useWalkingHistory from "@/hooks/walkHooks/useWalkingHistory";
 import {calculateCaloriesBurned, calculateWalkDifficulty} from "@/utils/walkCalculations";
 
-export default function WalkingInformationComponent() {
-  const { data: walks, isLoading: isDataLoading, isError: isDataError } = useWalkingHistory();
+interface WalkingInformationProps {
+  selectedDogId: string | null;
+}
+
+export default function WalkingInformationComponent({ selectedDogId }: WalkingInformationProps) {
+  const { data: walks, isLoading: isDataLoading, isError: isDataError } = useWalkingHistory(selectedDogId);
 
   if (isDataLoading) return <div>경로 기록을 불러오는 중입니다</div>;
   if (isDataError) return <div>경로 기록을 불러오지 못했습니다.</div>;
@@ -23,7 +27,7 @@ export default function WalkingInformationComponent() {
       <div className="flex flex-col gap-6">
         <WalkingCurrentInfoComponent
           title="경과 시간"
-          value={`${latestWalk.walkTime} 분`}
+          value={`${latestWalk.walk_time} 분`}
         />
         <WalkingCurrentInfoComponent
           title="거리"

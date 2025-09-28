@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import {DogProfile} from "@/types/dogProfile";
+
+const supabase = createClient();
 
 const getPetProfilesAPI = async (): Promise<DogProfile[]> => {
   const { data: { user } } = await supabase.auth.getUser();

@@ -41,8 +41,8 @@ export function calculateCaloriesBurned(
   walkData: WalkData,
   dogWeight: number
 ): number {
-  const { distance, walkTime } = walkData;
-  const difficulty = calculateWalkDifficulty(distance, walkTime);
+  const { distance, walk_time } = walkData;
+  const difficulty = calculateWalkDifficulty(distance, walk_time);
 
   let metFactor: number;
 
@@ -60,6 +60,6 @@ export function calculateCaloriesBurned(
       metFactor = 0.06;
   }
 
-  const calories = dogWeight * walkTime * metFactor;
+  const calories = dogWeight * walk_time * metFactor;
   return calories;
 }

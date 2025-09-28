@@ -1,6 +1,8 @@
 import {DogProfileCreate} from "@/types/dogProfile";
-import {supabase} from "@/lib/supabase/client";
+import {createClient} from "@/lib/supabase/client";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
+
+const supabase = createClient();
 
 interface useProfilePostProps {
   setEnrollPetModal: (value: boolean) => void;
