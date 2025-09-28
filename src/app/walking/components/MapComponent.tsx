@@ -19,8 +19,9 @@ export default function MapComponent({ selectedDogId, setSelectedDogId}: MapComp
   const {containerRef, map} = useKakaoMap({currentLocation});
 
   const [myDogs, setMyDogs] = useState<DogProfile[]>([]);
+  const [userId, setUserId] = useState<string | null>(null);
 
-  const {walkData, clearDrawing} = useKakaoDrawingMap(map, selectedDogId);
+  const {walkData, clearDrawing} = useKakaoDrawingMap(map, selectedDogId, userId);
   const [isLoading, setIsLoading] = useState(false);
   const queryClient = useQueryClient();
 
@@ -29,7 +30,10 @@ export default function MapComponent({ selectedDogId, setSelectedDogId}: MapComp
   useEffect(() => {
     const fetchMyDogs = async () => {
       const { data: { user } } = await supabase.auth.getUser();
+
       if (user) {
+        setUserId(user.id);
+
         const { data: profiles } = await supabase
           .from('dog_profiles')
           .select('*')
@@ -44,7 +48,7 @@ export default function MapComponent({ selectedDogId, setSelectedDogId}: MapComp
       }
     };
     fetchMyDogs();
-  }, []);
+  }, [setSelectedDogId]);
 
   const handleSaveWalkPath = async () => {
     if (!walkData) {

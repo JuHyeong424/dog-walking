@@ -3,24 +3,24 @@ export type WalkDifficulty = "여유로운 산책" | "보통 걸음" | "활기�
 
 interface WalkData {
   distance: number;
-  walkTime: number;
+  walk_time: number;
 }
 
 /**
  * 산책의 평균 속도를 기반으로 난이도를 계산하는 함수
  * @param distance - 총 거리 (m)
- * @param walkTime - 총 시간 (분)
+ * @param walk_time
  * @returns {WalkDifficulty} - 계산된 난이도
  */
 export function calculateWalkDifficulty(
   distance: number,
-  walkTime: number
+  walk_time: number
 ): WalkDifficulty {
-  if (walkTime <= 0) {
+  if (walk_time <= 0) {
     return "여유로운 산책"; // 시간이 0이면 계산 불가, 기본값 반환
   }
 
-  const speed = distance / walkTime; // 분당 미터(m/min)
+  const speed = distance / walk_time; // 분당 미터(m/min)
 
   if (speed < 50) {
     return "여유로운 산책";
