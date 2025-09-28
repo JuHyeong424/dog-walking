@@ -18,7 +18,7 @@ export default function WalkingInformationComponent({ selectedDogId }: WalkingIn
 
   const latestWalk = walks[0];
   const DOG_WEIGHT_KG = 10;
-  const difficulty = calculateWalkDifficulty(latestWalk.distance, latestWalk.walkTime);
+  const difficulty = calculateWalkDifficulty(latestWalk.distance, latestWalk.walk_time);
   const calories = calculateCaloriesBurned(latestWalk, DOG_WEIGHT_KG);
 
   return (
