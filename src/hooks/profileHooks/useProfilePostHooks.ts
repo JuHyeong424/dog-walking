@@ -38,7 +38,7 @@ export default function useProfilePostHooks({ setEnrollPetModal }: useProfilePos
     mutationFn: addPetProfile,
     onSuccess: () => {
       console.log("반려견 정보 저장 완료");
-      queryClient.invalidateQueries({ queryKey: ['dog_profiles']});
+      queryClient.invalidateQueries({ queryKey: ['petProfiles']});
       setEnrollPetModal(false);
     },
     onError: (error) => {

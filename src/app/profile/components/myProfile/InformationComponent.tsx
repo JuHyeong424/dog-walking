@@ -1,6 +1,6 @@
 interface InformaitonProps {
   label: string;
-  value: string;
+  value: string | number;
 }
 
 export default function InformationComponent({ label, value }: InformaitonProps) {

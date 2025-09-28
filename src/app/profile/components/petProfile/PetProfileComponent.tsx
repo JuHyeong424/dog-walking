@@ -1,15 +1,21 @@
+import { DogProfile } from "@/types/dogProfile";
 import PetInfoComponent from "@/app/profile/components/petProfile/PetInfoComponent";
+import useProfileGetHooks from "@/hooks/profileHooks/useProfileGetHooks";
 
 interface PetProfileProps {
   setEnrollPetModal: (value: boolean) => void;
 }
 
 export default function PetProfileComponent({ setEnrollPetModal }: PetProfileProps) {
+  const { petProfiles, isLoading: petProfileIsLoading } = useProfileGetHooks();
 
+  if (petProfileIsLoading) {
+    return <div>불러오는 중...</div>
+  }
 
   return (
     <div className="w-full rounded-xl p-10 bg-white">
-      <div className="flex flex-row justify-between items-center cursor-pointer pb-4">
+      <div className="flex flex-row justify-between items-center pb-4">
         <h1 className="font-bold text-xl">반려견 프로필</h1>
         <button
           onClick={() => setEnrollPetModal(true)}
@@ -19,9 +25,13 @@ export default function PetProfileComponent({ setEnrollPetModal }: PetProfilePro
         </button>
       </div>
       <div className="flex flex-row gap-4">
-        <PetInfoComponent />
-        <PetInfoComponent />
+        {petProfiles?.map((item: DogProfile) => (
+          <PetInfoComponent
+            key={item.id}
+            petInfo={item}
+          />
+        ))}
       </div>
     </div>
-  )
+  );
 }

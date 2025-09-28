@@ -2,9 +2,11 @@ import PetEnrollInputComponent from "@/app/profile/components/petProfile/PetEnro
 import PetEnrollSelectComponent from "@/app/profile/components/petProfile/PetEnrollSelectComponent";
 import {BREED, DISEASE, GENDER, SIZE} from "@/constants/enrollPet";
 import PetEnrollRowInputComponent from "@/app/profile/components/petProfile/PetEnrollRowInputComponent";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import useProfilePostHooks from "@/hooks/profileHooks/useProfilePostHooks";
 import {DogProfileCreate} from "@/types/dogProfile";
+import {User} from "@supabase/supabase-js";
+import {supabase} from "@/lib/supabase/client";
 
 interface PetEnrollProps {
   setEnrollPetModal: (value: boolean) => void;
@@ -19,15 +21,31 @@ export default function PetEnrollModal({ setEnrollPetModal }: PetEnrollProps) {
   const [age, setAge] = useState<number>(0);
   const [weight, setWeight] = useState<number>(0);
 
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const addPetMutation = useProfilePostHooks({ setEnrollPetModal });
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data: { user }} = await supabase.auth.getUser();
+      setCurrentUser(user);
+    };
+
+    fetchUser();
+  }, []);
+
   const onHandleSave = () => {
-    if (!name || !breed || !size || !gender || age === '' || weight === '') {
+    if (!currentUser) {
+      alert("사용자 정보가 없습니다. 다시 로그인해주세요.");
+      return;
+    }
+
+    if (!name || !breed || !size || !gender || age === 0 || weight === 0) {
       alert('모든 필수 항목을 입력해주세요.');
       return;
     }
 
     const newPetData: DogProfileCreate = {
+      user_id: currentUser.id,
       name,
       breed,
       disease,

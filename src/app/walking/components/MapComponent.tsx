@@ -4,7 +4,7 @@ import useKakaoDrawingMap from "@/hooks/walkHooks/useKakaoDrawingMap";
 import "@/styles/mapStyles.css";
 import {useEffect, useState} from "react";
 import {useQueryClient} from "@tanstack/react-query";
-import {createClient} from "@/lib/supabase/client";
+import {supabase} from "@/lib/supabase/client";
 import {DogProfile} from "@/types/dogProfile";
 
 export default function MapComponent() {
@@ -19,7 +19,6 @@ export default function MapComponent() {
   const queryClient = useQueryClient();
 
   console.log("walk", walkData)
-  const supabase = createClient();
 
   useEffect(() => {
     const fetchMyDogs = async () => {
@@ -39,7 +38,7 @@ export default function MapComponent() {
       }
     };
     fetchMyDogs();
-  }, [supabase]);
+  }, []);
 
   const handleSaveWalkPath = async () => {
     if (!walkData) {
