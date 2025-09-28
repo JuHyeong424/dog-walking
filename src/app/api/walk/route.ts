@@ -81,7 +81,7 @@ export async function POST(request: Request) {
     }
 
     const body: WalkData = await request.json();
-    const { coordinates, distance, walkTime, dog_id } = body;
+    const { coordinates, distance, walk_time, dog_id } = body;
 
     if (!coordinates || coordinates.length < 2 || !distance || !dog_id) {
       return NextResponse.json({ error: '잘못된 경로 데이터입니다.' }, { status: 400 });
@@ -104,7 +104,7 @@ export async function POST(request: Request) {
         dog_id: dog_id,
         name: walkName,
         distance: distance,
-        walk_time: walkTime,
+        walk_time: walk_time,
         coordinates: coordinates,
       })
       .select()
